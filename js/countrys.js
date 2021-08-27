@@ -5,23 +5,37 @@ const getCountrys = () => {
 }
 getCountrys();
 const display = countrys => {
-    console.log(countrys);
+    // console.log(countrys);
     const countryContainer = document.getElementById('country');
     countrys.forEach(country => {
-        console.log(country);
+        // console.log(country);
         const div = document.createElement('div');
         div.classList.add('country')
-
-        const h3 = document.createElement('h3');
-        h3.innerText = (` Country Name : ${country.name}`);
-        div.appendChild(h3);
-        const p = document.createElement('p');
-        p.innerText = (`Capatial : ${country.capital}`);
-        div.appendChild(p);
-        const img = document.createElement('img');
-        img.innerText = (`Flag : ${country.flag}`)
-        div.appendChild(img);
+        div.innerHTML = `
+        <h3>Country Name : ${country.name} </h3>
+        <P>Capatial : ${country.capital} </p>
+        <button onclick="getCountryByName('${country.name}')">Add Details</button>
+        `
         countryContainer.appendChild(div)
 
     })
+}
+const getCountryByName = name => {
+    // console.log(name);
+    const url = `https://restcountries.eu/rest/v2/name/${name}`;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => displayDetails(data[0]))
+}
+const displayDetails = country => {
+    console.log(country);
+    const details = document.getElementById('countru-details');
+    details.classList.add('details')
+    details.innerHTML = `
+    <h5>Country Name : ${country.name}</h5>
+    <p>Area : ${country.area}</p>
+    <h5> Capital : ${country.capital}</h5>
+    <img width="150px" src="${country.flag}"></img>
+    <p>Population : ${country.population}</p>
+    `
 }
